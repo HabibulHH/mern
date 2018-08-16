@@ -1,2 +1,4 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.Promise=global.Promise;
+mongoose.connect('mongodb://localhost:27017/mongo',{ useNewUrlParser: true });
+module.exports={mongoose}

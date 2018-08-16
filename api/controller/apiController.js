@@ -1,22 +1,11 @@
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/test',{ useNewUrlParser: true });
-
+const {mongoose} = require('../DB/mongoconnect');
+var  {User} = require('../DB/usermodel');
 module.exports=function(app){
 
     app.post('/api/savedata/',(req,res)=>{
         console.log(req.body);
-        var User=mongoose.model('Users',{
-            name:{
-                type:String,
-                required:true,
-                minlength:2
-
-            },
-            age:{
-                type:String
-            }
-        });
+        
         const user = new User({
             name:req.body.firstName,
             age:req.body.lastName
@@ -27,8 +16,12 @@ module.exports=function(app){
             res.status(404).send(error);
         })
     })
-    app.get('/api/getusers',(req,res)=>{
+    app.get('/api/getAllUsers',(req,res)=>{
 
-        res.json({name:"hira",age:23});
+        User.find().then((result)=>{
+            res.send({status:200,data:result});
+        },(error)=>{
+            res.status(404).send(error);
+        });
     })
 }
